@@ -1,11 +1,15 @@
 <?php
 
+/**
+ * Trait CdcMigration
+ *
+ * Use this trait in a migration to create a CDC database. Call createCDC() within the up method
+ * and removeCDC() from within down().
+ */
 trait CdcMigration
 {
-	private $db_name = '';
-
 	/**
-	 * CDC method types.
+	 * @var array
 	 */
 	private $events = array(
 		'ins' => 'INSERT',
@@ -14,22 +18,41 @@ trait CdcMigration
 	);
 
 	/**
-	 * CDC db name.
+	 * Name of the source database to be CDC'd
+	 *
+	 * @var string
 	 */
-	private $cdc_db = 'cdc';
+	protected $db_name = '';
+
+	/**
+	 * Name for the CDC database
+	 *
+	 * @var string
+	 */
+	protected $cdc_db = 'cdc';
 
 	/**
 	 * Whether or not to output script-generated SQL to a file during the migration. (For up() method only.)
+	 *
+	 * @var bool
 	 */
-	private $create_sql_file = false;
+	protected $create_sql_file = false;
 
 	/**
 	 * Name of the file for SQL output.
+	 *
+	 * @var string
 	 */
-	private $sql_filename = 'tmp/cdc_create_';
+	protected $sql_filename = 'tmp/cdc_create_';
 
 	/**
-	 * Migrate Up.
+	 * Call this method from within the up() method of your migration...
+	 * Options for params:
+	 * 	ignore_prefixes
+	 * 	ignore_table
+	 * 	ignore_triggers
+	 *
+	 * @param array $params
 	 */
 	public function createCDC($params=array())
 	{
@@ -72,7 +95,7 @@ trait CdcMigration
 	}
 
 	/**
-	 * Migrate Down.
+	 * down...
 	 */
 	public function removeCDC()
 	{
@@ -86,6 +109,8 @@ trait CdcMigration
 	/**
 	 * This is intended to prevent a migration rollback from deleting existing data in CDC db;
 	 * it basically saves a list of table and trigger names to pass over during a rollback.
+	 *
+	 * @param array $db_objs
 	 */
 	private function saveRollbackIgnoreList($db_objs=array())
 	{
@@ -106,8 +131,9 @@ trait CdcMigration
 	}
 
 	/**
-	 * @return array
 	 * Retrieves the CDC tables and triggers that existed before this migration was performed.
+	 *
+	 * @return array
 	 */
 	private function getRollbackIgnoreList()
 	{
