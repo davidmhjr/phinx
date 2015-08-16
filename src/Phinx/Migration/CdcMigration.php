@@ -2,6 +2,7 @@
 
 /**
  * Trait CdcMigration
+ * @author David M. Humphrey <davidmhjr@gmail.com>
  *
  * Use this trait in a migration to create a CDC database. Call createCDC() within the up method
  * and removeCDC() from within down().
