@@ -49,9 +49,10 @@ trait CdcMigration
 	/**
 	 * Call this method from within the up() method of your migration...
 	 * Options for params:
-	 * 	ignore_prefixes
-	 * 	ignore_table
-	 * 	ignore_triggers
+	 * 	db_source: string - Name of the source database to be CDC'd
+	 * 	ignore_prefixes: array - any table prefixes to be left out of the CDC
+	 * 	ignore_tables: array - any tables to be left out of the CDC
+	 * 	ignore_triggers: array - any triggers to be left out of the CDC
 	 *
 	 * @param array $params
 	 */
